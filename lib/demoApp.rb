@@ -1,4 +1,6 @@
-
 get '/' do
-  erb :index
+  'hello world'
+  #erb :index
 end
+
+
