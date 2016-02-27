@@ -1,6 +1,6 @@
 require 'sinatra/base'
-require './auth_store'
 require 'json'
+require_relative './auth_store'
 
 class App < Sinatra::Application
 

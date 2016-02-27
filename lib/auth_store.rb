@@ -1,4 +1,4 @@
-require './credential'
+require_relative './credential'
 
 class AuthStore
   # --- class vars & methods ---
