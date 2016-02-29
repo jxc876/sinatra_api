@@ -17,9 +17,7 @@ ex: /api/notes
 
 ## Start App
 
-* `rackup`
+Either of the following should work: 
 
-Or using either of the following: 
-
+* `rackup` 
 * `heroku local`
-* `foreman start`

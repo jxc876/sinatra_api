@@ -1,49 +1,37 @@
-require_relative './credential'
+require 'redis'
+require 'securerandom'
 
 class AuthStore
-  # --- class vars & methods ---
-  @@credentials = []
-  @@tokens = {}
 
-  def self.credentials
-    @@credentials
-  end
+  CREDENTIALS = 'credentials'
+  TOKENS = 'tokens'
+  @@redis = Redis.new(url: ENV['REDIS_URL'])
 
-  def self.tokens
-    @@tokens
-  end
+  def self.register (hash)
+    username = hash['username']
+    password = hash['password']
 
-  def self.save(credential)
-    @@tokens[credential.token] = credential
+    if @@redis.hexists CREDENTIALS, username
+      return false;
+    else
+      @@redis.hset CREDENTIALS, username, password
+    end
   end
 
   def self.check_token(token)
-    @@tokens[token]
-  end
-
-  def self.register (hash)
-    username_taken = @@credentials.any? do |cred|
-      cred.username == hash['username']
-    end
-    if username_taken
-      return false;
-    else
-      username = hash['username']
-      password = hash['password']
-      credential = Credential.new(username, password)
-      @@credentials << credential
-    end
+    return @@redis.sismember TOKENS, token
   end
 
   def self.check_credential(hash)
-    @@credentials.find do |cred|
-      cred.username == hash['username'] and cred.password == hash['password']
-    end
+    username = hash['username']
+    password = hash['password']
+    stored_pass = @@redis.hget CREDENTIALS, username
+    return false unless password and password == stored_pass
+
+    token = SecureRandom.uuid
+    @@redis.sadd TOKENS, token
+
+    {:username => username, :token => token}
   end
-
-  # --- instance vars & methods ---
-
-  # --- populate some data ---
-  @@credentials << Credential.new('admin', 'secret')
 
 end

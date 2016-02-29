@@ -15,11 +15,9 @@ class App < Sinatra::Application
 
   post '/api/login' do
     user_pass = parse_body()
-    credential = AuthStore.check_credential(user_pass)
-    if (credential)
-      credential.generate_token()
-      AuthStore.save credential
-      [200, credential.to_json]
+    token = AuthStore.check_credential(user_pass)
+    if token
+      [200, token.to_json]
     else
       [401, {message: 'invalid credentials'}.to_json]
     end
