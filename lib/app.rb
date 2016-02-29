@@ -37,7 +37,7 @@ class App < Sinatra::Application
     token = request.env['HTTP_X_AUTH_TOKEN']
     if AuthStore.check_token(token)
       notes = ['note 1', 'note 2']
-      [401, notes.to_json]
+      [200, notes.to_json]
     else
       [401, { message: 'not authorized' }.to_json]
     end
