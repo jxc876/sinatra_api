@@ -2,6 +2,8 @@
 
 Sinatra API supporting registration & authentication
 
+[Demo](https://demo-app-api.herokuapp.com/api)
+
 ## Install App
 
 * `bundle install`
