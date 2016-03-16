@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gem 'sinatra'
 gem 'thin'
-gem 'redis'
+gem 'mongo', '~> 2.1'
 
 group :test do
   gem 'rspec'
